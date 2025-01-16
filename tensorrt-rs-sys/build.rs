@@ -67,12 +67,14 @@ fn main() {
     let libraries = vec![
         "nvinfer",
         "nvinfer_plugin",
-        "nvparsers",
+        "cudla",
     ];
 
     for library in libraries {
         println!("cargo:rustc-link-lib={}", library);
     }
+    // Path for libcudla.so should be added explicitly somehow
+    println!("cargo:rustc-link-search=/usr/local/cuda-12.6/targets/aarch64-linux/lib/");
 
     for file in include_files {
         println!("cargo:rerun-if-changed={}", file);
