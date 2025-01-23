@@ -18,15 +18,14 @@ pub struct TRTEngine {
 }
 
 impl TRTEngine {
-    pub fn new<P: AsRef<Path>>(engine_path: &P, stream: &CuStream) -> TRTResult<Self> {
+    pub fn new(engine_data: Vec<u8>, stream: &CuStream) -> TRTResult<Self> {
+
         let mut runtime = match Runtime::new() {
             Some(runtime) => runtime,
             None => return Err(TRTError::RuntimeCreationError),
         };
 
-        let data = fs::read(engine_path)?;
-
-        let engine = match runtime.deserialize(data.as_slice()) {
+        let engine = match runtime.deserialize(engine_data.as_slice()) {
             Some(engine) => engine,
             None => return Err(TRTError::EngineDeserializationError),
         };
